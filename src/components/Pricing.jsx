@@ -42,10 +42,9 @@ const Pricing = () => {
                             Most Popular
                         </div>
                         <div className="text-center">
-                            <p className="text-gray-500 font-medium mb-2">Standard Session</p>
+                            <p className="text-gray-500 font-medium mb-2">Flexible Options</p>
                             <div className="flex items-baseline justify-center gap-1 mb-6">
-                                <span className="text-5xl font-extrabold text-gray-900">$20</span>
-                                <span className="text-xl text-gray-500">/ hour</span>
+                                <span className="text-4xl font-extrabold text-gray-900">Contact Us</span>
                             </div>
                             <div className="h-px bg-gray-100 w-full mb-6"></div>
                             <ul className="space-y-4 text-left mb-8">
@@ -56,14 +55,14 @@ const Pricing = () => {
                                     <span className="text-green-500">✓</span> Ontario Curriculum Aligned
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="text-green-500">✓</span> Progress Reporting
+                                    <span className="text-green-500">✓</span> Assessments & Reporting
                                 </li>
                                 <li className="flex gap-3">
-                                    <span className="text-green-500">✓</span> Homework Help Included
+                                    <span className="text-green-500">✓</span> Flexible Scheduling
                                 </li>
                             </ul>
                             <a href="#booking" className="btn btn-primary w-full shadow-lg shadow-indigo-200">
-                                Book This Plan
+                                Get a Quote
                             </a>
                         </div>
                     </motion.div>

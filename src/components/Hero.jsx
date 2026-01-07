@@ -22,7 +22,7 @@ const Hero = () => {
                         <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                             Expert tutoring for K-12 aligned with the Ontario curriculum.
                             Personalized learning in Math, Science, and more.
-                            Starting at just <span className="font-bold text-primary">$20/hr</span>.
+                            Affordable rates tailored to your needs.
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                             <a href="#booking" className="btn btn-primary w-full sm:w-auto text-lg px-8">

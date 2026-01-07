@@ -31,7 +31,7 @@ const Footer = () => {
                         <li><a href="#" className="hover:text-emerald-400 transition-colors">Math (K-12)</a></li>
                         <li><a href="#" className="hover:text-emerald-400 transition-colors">Science & Biology</a></li>
                         <li><a href="#" className="hover:text-emerald-400 transition-colors">Chemistry & Physics</a></li>
-                        <li><a href="#" className="hover:text-emerald-400 transition-colors">Adult IELTS Prep</a></li>
+                        <li><span className="text-gray-500 cursor-not-allowed">Adult IELTS Prep (Coming Soon)</span></li>
                     </ul>
                 </div>
 

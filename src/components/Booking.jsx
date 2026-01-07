@@ -22,7 +22,7 @@ const Booking = () => {
 
                 {/* Calendly Inline Widget Container */}
                 <div className="calendly-inline-widget w-full h-[700px] border border-gray-100 rounded-2xl shadow-sm overflow-hidden"
-                    data-url="https://calendly.com/young-northmind?hide_landing_page_details=1&hide_gdpr_banner=1"
+                    data-url="https://calendly.com/kay-tutoring?hide_landing_page_details=1&hide_gdpr_banner=1"
                     style={{ minWidth: '320px', height: '700px' }}>
                 </div>
             </div>

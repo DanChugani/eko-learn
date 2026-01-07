@@ -66,22 +66,28 @@ const Subjects = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.1 }}
                             viewport={{ once: true }}
-                            className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100"
+                            className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden"
                         >
-                            <div className="flex items-center gap-3 mb-6">
+                            <div className="absolute top-4 right-4 bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">
+                                COMING SOON
+                            </div>
+                            <div className="flex items-center gap-3 mb-6 opacity-75">
                                 <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
                                     <span className="font-bold">A+</span>
                                 </div>
                                 <h3 className="text-xl font-bold text-gray-900">Adult Education</h3>
                             </div>
-                            <ul className="space-y-3">
+                            <ul className="space-y-3 opacity-60">
                                 {adultSubjects.map((sub, i) => (
                                     <li key={i} className="flex items-start gap-3 text-gray-600">
-                                        <svg className="w-5 h-5 text-green-500 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        <svg className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                         <span>{sub}</span>
                                     </li>
                                 ))}
                             </ul>
+                            <div className="absolute inset-0 bg-white/50 flex items-center justify-center backdrop-blur-[1px]">
+                                <span className="bg-white px-4 py-2 rounded-lg shadow-sm font-semibold text-gray-500 border border-gray-100">Launching Late 2026</span>
+                            </div>
                         </motion.div>
 
                     </div>
