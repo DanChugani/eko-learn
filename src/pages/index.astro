@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/sections/Nav.astro';
+import Hero from '../components/sections/Hero.astro';
+import FactStrip from '../components/sections/FactStrip.astro';
+import Positioning from '../components/sections/Positioning.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import Subjects from '../components/sections/Subjects.astro';
+import Pricing from '../components/sections/Pricing.astro';
+import Tutors from '../components/sections/Tutors.astro';
+import Faq from '../components/sections/Faq.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import AdultEducation from '../components/sections/AdultEducation.astro';
+import Footer from '../components/sections/Footer.astro';
+import { site } from '../config/site.ts';
+import { faqs, seo } from '../content/home.ts';
+import { faqSchema, organizationSchema } from '../lib/schema.ts';
+
+const jsonLd = [organizationSchema(site, seo.description), faqSchema(faqs)];
+---
+
+<BaseLayout title={seo.title} description={seo.description} path="/" jsonLd={jsonLd}>
+  <Nav />
+  <main id="main" tabindex="-1">
+    <Hero />
+    <FactStrip />
+    <Positioning />
+    <HowItWorks />
+    <Subjects />
+    <Pricing />
+    {site.features.tutors && <Tutors />}
+    <Faq />
+    <FinalCta />
+    {site.features.adultEducation && <AdultEducation />}
+  </main>
+  <Footer />
+</BaseLayout>

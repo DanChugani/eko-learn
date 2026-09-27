@@ -1,0 +1,22 @@
+---
+import type { StrandStatus } from '../../content/sample-report.ts';
+
+/** Shape reinforces the status so it never depends on colour alone: filled, half, open. */
+interface Props {
+  status: StrandStatus;
+}
+const { status } = Astro.props;
+---
+
+<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false" class="shrink-0">
+  {status === 'secure' && <circle cx="6" cy="6" r="5" fill="currentColor" />}
+  {
+    status === 'developing' && (
+      <>
+        <circle cx="6" cy="6" r="4.25" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path d="M6 1.75a4.25 4.25 0 0 1 0 8.5z" fill="currentColor" />
+      </>
+    )
+  }
+  {status === 'gap' && <circle cx="6" cy="6" r="4.25" fill="none" stroke="currentColor" stroke-width="1.5" />}
+</svg>

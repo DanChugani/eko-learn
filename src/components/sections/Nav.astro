@@ -1,0 +1,90 @@
+---
+import Wordmark from '../ui/Wordmark.astro';
+import { navLinks, primaryCta } from '../../content/home.ts';
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-paper">
+  <nav aria-label="Main" class="page flex min-h-16 items-center justify-between gap-4 py-2">
+    <Wordmark />
+
+    <ul class="hidden items-center gap-1 lg:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="inline-flex min-h-11 items-center rounded px-3 font-medium text-ink no-underline hover:text-green hover:underline hover:underline-offset-4"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a href={primaryCta.href} class="btn btn-primary hidden sm:inline-flex">{primaryCta.label}</a>
+      <button
+        type="button"
+        class="group inline-flex min-h-11 min-w-11 items-center gap-2 rounded border-2 border-green px-3 font-semibold text-green lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-button
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path class="group-aria-expanded:hidden" d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          <path class="hidden group-aria-expanded:inline" d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <span>Menu</span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="border-t border-line bg-paper lg:hidden" hidden>
+    <ul class="page flex flex-col py-3">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="flex min-h-12 items-center border-b border-line/70 text-lg font-medium text-ink no-underline"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pt-4 pb-2">
+        <a href={primaryCta.href} class="btn btn-primary w-full">{primaryCta.label}</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.getElementById('mobile-menu');
+
+  if (button && menu) {
+    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+
+    const setOpen = (open: boolean) => {
+      button.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+    };
+
+    button.addEventListener('click', () => setOpen(!isOpen()));
+    menu.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

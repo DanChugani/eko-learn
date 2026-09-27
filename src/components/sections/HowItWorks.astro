@@ -1,0 +1,32 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import { steps } from '../../content/home.ts';
+---
+
+<section id="how-it-works" class="section border-t border-line bg-paper-deep" aria-labelledby="how-title">
+  <div class="page">
+    <SectionHeader
+      id="how-title"
+      eyebrow="How it works"
+      title="Assess, map, teach, then check it worked."
+      lede="Four steps, in the same order every time. The map from step two is what everything after it is built on."
+    />
+
+    <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        steps.map((step, i) => (
+          <li class="card flex flex-col p-6">
+            <p class="font-display text-5xl leading-none text-green" aria-hidden="true">
+              {i + 1}
+            </p>
+            <h3 class="mt-5 border-t border-line pt-4 text-xl text-green">
+              <span class="sr-only">Step {i + 1}: </span>
+              {step.title}
+            </h3>
+            <p class="mt-2 text-muted">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

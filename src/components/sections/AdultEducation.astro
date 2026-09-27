@@ -1,0 +1,26 @@
+---
+/**
+ * Adult education / IELTS. Hidden from the K-12 homepage; rendered only when
+ * site.features.adultEducation is true. Kept here so it can return as its own page later.
+ */
+import SectionHeader from '../ui/SectionHeader.astro';
+
+const offerings = [
+  'IELTS preparation (Academic and General Training)',
+  'English for professionals',
+  'Basic computer skills',
+  'Adult literacy',
+];
+---
+
+<section id="adult-education" class="section page" aria-labelledby="adult-title">
+  <SectionHeader
+    id="adult-title"
+    eyebrow="Adult education"
+    title="Tutoring for adults."
+    lede="1-on-1 online sessions for adult learners."
+  />
+  <ul class="mt-8 grid gap-3 sm:grid-cols-2">
+    {offerings.map((item) => <li class="card p-5 font-semibold">{item}</li>)}
+  </ul>
+</section>

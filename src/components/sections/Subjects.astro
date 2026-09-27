@@ -1,0 +1,47 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import { subjects } from '../../content/home.ts';
+---
+
+<section id="subjects" class="section page" aria-labelledby="subjects-title">
+  <SectionHeader
+    id="subjects-title"
+    eyebrow="Subjects"
+    title="Mapped to what your child is actually taught."
+    lede="Elementary math follows the 2020 Ontario strands. High school courses follow their Ontario course codes, so the tutor works from the same expectations as your child’s teacher."
+  />
+
+  <div class="mt-12 grid gap-6 md:grid-cols-2">
+    {
+      subjects.map((subject) => (
+        <article id={subject.id} class="card p-6 sm:p-8" aria-labelledby={`${subject.id}-title`}>
+          <h3 id={`${subject.id}-title`} class="text-2xl text-green">
+            {subject.name}
+          </h3>
+          <p class="mt-1 text-muted">{subject.summary}</p>
+          {subject.groups.map((group) => (
+            <div class="mt-6">
+              <h4 class="border-b border-line pb-2 text-sm font-bold tracking-[0.1em] text-muted uppercase">
+                {group.label}
+              </h4>
+              <ul class="mt-2">
+                {group.items.map((item) => (
+                  <li class="flex gap-3 border-b border-line/60 py-2 last:border-b-0">
+                    {item.code ? (
+                      <span class="w-32 shrink-0 font-semibold text-green tabular-nums max-[400px]:w-24">
+                        {item.code}
+                      </span>
+                    ) : (
+                      <span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                    )}
+                    <span>{item.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </article>
+      ))
+    }
+  </div>
+</section>
