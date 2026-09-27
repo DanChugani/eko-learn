@@ -6,7 +6,7 @@ description: How to deploy the Ekolearn application to Vercel
 
 The site is a static Astro build (`dist/`). `vercel.json` in the repo root pins the Astro framework preset, build command and output directory, so Vercel project settings do not need to change after the migration from Vite.
 
-Before deploying, run `npm run verify` and `npm run check:placeholders`.
+Before deploying to production, run `npm run check:launch`. It runs the full `verify` suite and then fails if any `[PLACEHOLDER]` values remain in `src/config/site.ts`. Treat a failure as a blocker.
 
 ## Prerequisites
 - A [Vercel account](https://vercel.com/signup)

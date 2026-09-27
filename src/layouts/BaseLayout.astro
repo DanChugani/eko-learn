@@ -52,6 +52,22 @@ const ogImage = new URL(site.ogImage, site.url).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <noscript>
+      <style>
+        /*
+         * Without JavaScript the menu toggle cannot work, so show the mobile links statically instead.
+         * Declared in Tailwind's base layer: preflight's layered [hidden] !important would beat an unlayered rule.
+         */
+        @layer base {
+          @media (max-width: 63.99rem) {
+            header.sticky { position: static; }
+            [data-menu-button] { display: none !important; }
+            #mobile-menu[hidden] { display: block !important; }
+          }
+        }
+      </style>
+    </noscript>
+
     {jsonLd.map((data) => <script type="application/ld+json" set:html={serializeJsonLd(data)} />)}
   </head>
   <body>

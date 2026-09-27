@@ -14,6 +14,13 @@ test.describe('SEO: served HTML (no JavaScript)', () => {
     await expect(page.locator('#faq details')).toHaveCount(faqs.length);
   });
 
+  test('mobile nav links are reachable without JavaScript', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    await expect(page.locator('[data-menu-button]')).toBeHidden();
+    await expect(page.locator('#mobile-menu').getByRole('link', { name: 'Pricing' })).toBeVisible();
+  });
+
   test('has per-page title, description, canonical and social tags', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(seo.title);

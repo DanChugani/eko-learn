@@ -33,7 +33,7 @@ Unknown values are written as `[PLACEHOLDER]` in `src/config/site.ts`. They show
 
 ```bash
 npm run check:placeholders             # list what is left
-npm run check:placeholders -- --strict # exit 1 if any remain (use before launch)
+npm run check:launch                   # verify + fail if any placeholders remain (run before deploying)
 ```
 
 ### Feature flags
