@@ -2,9 +2,9 @@ const BRAND_PARAMS = {
   hide_landing_page_details: '1',
   hide_gdpr_banner: '1',
   // Honoured on paid Calendly plans, ignored otherwise.
-  primary_color: '1f4d3f',
-  text_color: '1d2622',
-  background_color: 'fffdf8',
+  primary_color: '3a3da8',
+  text_color: '1c1a3b',
+  background_color: 'ffffff',
 } as const;
 
 /** Builds the embed URL for Calendly's inline widget from the configured booking page. */

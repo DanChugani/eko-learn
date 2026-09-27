@@ -23,7 +23,7 @@ describe('calendlyEmbedUrl', () => {
     const url = new URL(calendlyEmbedUrl('https://calendly.com/ekolearn/assessment'));
     assert.equal(url.origin + url.pathname, 'https://calendly.com/ekolearn/assessment');
     assert.equal(url.searchParams.get('hide_landing_page_details'), '1');
-    assert.equal(url.searchParams.get('primary_color'), '1f4d3f');
+    assert.equal(url.searchParams.get('primary_color'), '3a3da8');
   });
 
   it('rejects a value that is not a URL', () => {

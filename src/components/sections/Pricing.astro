@@ -77,20 +77,20 @@ const tiers: Tier[] = [
           <li
             class:list={[
               'card relative flex flex-col p-6 sm:p-8',
-              tier.featured && 'border-2 border-green lg:-my-3 lg:py-11',
+              tier.featured && 'border-2 border-brand lg:-my-3 lg:py-11',
             ]}
           >
             {tier.tag && (
               <p
                 class:list={[
                   'absolute -top-3 left-6 rounded-sm px-2 py-0.5 text-xs font-bold tracking-[0.12em] uppercase',
-                  tier.featured ? 'bg-green text-paper' : 'bg-accent-tint text-accent-ink',
+                  tier.featured ? 'bg-brand text-paper' : 'bg-accent-tint text-accent-ink',
                 ]}
               >
                 {tier.tag}
               </p>
             )}
-            <h3 id={`${tier.id}-title`} class="text-2xl text-green">
+            <h3 id={`${tier.id}-title`} class="text-2xl text-brand">
               {tier.name}
             </h3>
             <p class="mt-4 flex flex-wrap items-baseline gap-x-2">
@@ -102,7 +102,7 @@ const tiers: Tier[] = [
               {tier.includes.map((item) => (
                 <li class="flex gap-3">
                   <svg
-                    class="mt-1 shrink-0 text-green"
+                    class="mt-1 shrink-0 text-brand"
                     width="16"
                     height="16"
                     viewBox="0 0 16 16"
@@ -133,7 +133,7 @@ const tiers: Tier[] = [
       }
     </ul>
 
-    <p class="mt-10 text-center font-display text-xl text-green">{pricingNote}</p>
+    <p class="mt-10 text-center font-display text-xl text-brand">{pricingNote}</p>
     <p class="mt-2 text-center text-sm text-muted">Prices in Canadian dollars.</p>
   </div>
 </section>

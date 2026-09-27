@@ -1,0 +1,35 @@
+---
+import GapStoryVisual from './GapStoryVisual.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import { gapStory, primaryCta } from '../../content/home.ts';
+---
+
+<section class="gap-story-section section relative isolate overflow-hidden" aria-labelledby="gap-story-title">
+  <div class="graph-paper" aria-hidden="true"></div>
+  <div class="page grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+    <div>
+      <SectionHeader id="gap-story-title" eyebrow={gapStory.eyebrow} title={gapStory.title} lede={gapStory.lede} />
+      <a href={primaryCta.href} class="btn btn-primary mt-8">{primaryCta.label}</a>
+    </div>
+    <GapStoryVisual />
+  </div>
+</section>
+
+<style>
+  /* Faint exercise-book grid behind the cards, fading out to plain paper. */
+  .graph-paper {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(to right, rgba(58, 61, 168, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(58, 61, 168, 0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 60% 75% at 75% 50%, #000 20%, transparent 75%);
+  }
+  @media (max-width: 63.99rem) {
+    .graph-paper {
+      mask-image: radial-gradient(ellipse 90% 45% at 50% 75%, #000 20%, transparent 75%);
+    }
+  }
+</style>

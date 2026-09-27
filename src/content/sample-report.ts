@@ -46,3 +46,14 @@ export const sampleReport = {
   ],
   recheck: 'Re-assessed against this map after week 4.',
 };
+
+/**
+ * The report card the hero contrasts with the gap map: same illustrative student,
+ * a respectable overall grade that hides a gap in one strand.
+ */
+export const sampleReportCard = {
+  label: 'Report card',
+  subject: 'Mathematics',
+  mark: 'B',
+  comment: 'Works hard in class. Would benefit from more practice at home.',
+};

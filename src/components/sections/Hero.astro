@@ -1,24 +1,196 @@
 ---
-import GapMapCard from './GapMapCard.astro';
-import { hero, primaryCta } from '../../content/home.ts';
+/**
+ * Hero: headline over a looping film of the brand's gold tree, light pulsing down into its roots.
+ * The still frame is a real <img> (fast first paint, and the whole hero when motion is reduced,
+ * autoplay is blocked or JS is off); the video fades in over it once it is actually playing.
+ */
+import HandCircle from '../ui/HandCircle.astro';
+import { hero, heroMedia, primaryCta } from '../../content/home.ts';
 ---
 
-<section class="page grid items-center gap-12 pt-10 pb-16 lg:grid-cols-[1.15fr_1fr] lg:gap-16 lg:pt-16 lg:pb-24">
-  <div>
-    <p class="eyebrow">Ontario curriculum tutoring, Grades 1 to 12</p>
-    <h1 class="mt-4 text-[clamp(2.5rem,1.4rem+4.2vw,4.25rem)] text-green">
-      <span class="block"
-        >Find the <span class="underline decoration-accent decoration-[0.08em] underline-offset-[0.2em] [text-decoration-skip-ink:none]">gaps</span
-        >.</span
-      >{' '}
-      <span class="block">Teach the gaps.</span>
-    </h1>
-    <p class="lede mt-6">{hero.subline}</p>
-    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-      <a href={primaryCta.href} class="btn btn-primary">{primaryCta.label}</a>
-      <a href={hero.secondaryCta.href} class="btn btn-secondary">{hero.secondaryCta.label}</a>
+<section class="hero relative isolate overflow-hidden bg-hero-from">
+  <div class="page hero-copy relative z-10 flex flex-col justify-center pt-12 pb-10 lg:py-24">
+    <div class="max-w-[36rem] lg:max-w-[30rem] xl:max-w-[36rem]">
+      <p class="eyebrow text-accent-light!">Ontario curriculum tutoring, Grades 1 to 12</p>
+      <h1 class="mt-5 text-[clamp(2.75rem,1.4rem+5vw,4.75rem)] leading-[1.02] text-white lg:text-[3.75rem] xl:text-[4.75rem]">
+        <span class="block"
+          >Find the <span class="relative inline-block text-accent-light"
+            >gaps<HandCircle class="-inset-x-[0.16em] top-[0.04em] -bottom-[0.1em]" delay="450ms" /></span
+          >.</span
+        >{' '}
+        <span class="block">Teach the gaps.</span>
+      </h1>
+      <p class="mt-7 text-lg text-hero-soft">{hero.subline}</p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href={primaryCta.href} class="btn btn-gold">{primaryCta.label}</a>
+        <a href={hero.secondaryCta.href} class="btn btn-ghost-light">{hero.secondaryCta.label}</a>
+      </div>
     </div>
   </div>
 
-  <GapMapCard />
+  <div class="hero-media" aria-hidden="true">
+    <img
+      class="hero-still"
+      src={heroMedia.poster}
+      srcset={`${heroMedia.posterSmall} 1280w, ${heroMedia.poster} 1920w`}
+      sizes="100vw"
+      alt=""
+      width={heroMedia.width}
+      height={heroMedia.height}
+      fetchpriority="high"
+      decoding="async"
+    />
+    <video class="hero-video" muted loop playsinline preload="none" tabindex="-1" data-hero-video>
+      <source src={heroMedia.videoSmall} type="video/mp4" media="(max-width: 63.99rem)" />
+      <source src={heroMedia.video} type="video/mp4" />
+    </video>
+    <div class="hero-scrim"></div>
+  </div>
+
+  <button type="button" class="video-toggle" data-hero-video-toggle data-state="paused" hidden>
+    <svg class="icon-pause" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <rect x="2.5" y="2" width="3" height="10" rx="1" fill="currentColor"></rect>
+      <rect x="8.5" y="2" width="3" height="10" rx="1" fill="currentColor"></rect>
+    </svg>
+    <svg class="icon-play" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <path d="M4 2.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L4.9 1.7a.6.6 0 0 0-.9.5z" fill="currentColor"></path>
+    </svg>
+  </button>
 </section>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-hero-video-toggle]');
+
+  if (video && toggle) {
+    let pausedByUser = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const setState = (playing: boolean) => {
+      toggle.dataset.state = playing ? 'playing' : 'paused';
+      toggle.setAttribute('aria-label', playing ? 'Pause background animation' : 'Play background animation');
+    };
+    // play() rejects when autoplay is blocked (low power mode, data saver); the still frame stays.
+    const play = () =>
+      video.play().then(
+        () => setState(true),
+        () => setState(false),
+      );
+    const pause = () => {
+      video.pause();
+      setState(false);
+    };
+
+    video.addEventListener('playing', () => video.classList.add('is-visible'), { once: true });
+    toggle.addEventListener('click', () => {
+      pausedByUser = !video.paused;
+      if (pausedByUser) pause();
+      else play();
+    });
+
+    // Only runs while the hero is on screen, and never against a reduced-motion preference.
+    new IntersectionObserver(([entry]) => {
+      if (pausedByUser) return;
+      if (entry.isIntersecting) play();
+      else pause();
+    }).observe(video);
+
+    setState(false);
+    toggle.hidden = false;
+  }
+</script>
+
+<style>
+  /* Phones and tablets: copy first, then the tree as a panel that fades up into the section. */
+  .hero-media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-height: 34rem;
+    width: 100%;
+    margin-top: -4rem;
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 30%);
+  }
+  .hero-still,
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The tree sits right of centre in the 16:9 frame; anchoring right centres it in a square. */
+    object-position: 100% 60%;
+  }
+  .hero-video {
+    opacity: 0;
+    transition: opacity 900ms ease;
+  }
+  .hero-video:global(.is-visible) {
+    opacity: 1;
+  }
+  .hero-scrim {
+    display: none;
+  }
+
+  /* Desktop: the film fills the hero and the copy sits on its dark left side. */
+  @media (min-width: 64rem) {
+    .hero-copy {
+      min-height: clamp(38rem, 88svh, 52rem);
+    }
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      aspect-ratio: auto;
+      max-height: none;
+      margin: 0;
+      mask-image: none;
+    }
+    /* Anchor right so the tree stays clear of the copy on narrower desktops;
+       on very wide screens the frame crops top and bottom, so favour the canopy. */
+    .hero-still,
+    .hero-video {
+      object-position: 100% 40%;
+    }
+    .hero-scrim {
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        var(--color-hero-from) 0%,
+        rgba(37, 48, 154, 0.85) 32%,
+        rgba(37, 48, 154, 0) 58%
+      );
+    }
+  }
+
+  .hero :global(:focus-visible) {
+    outline-color: var(--color-accent-light);
+  }
+
+  .video-toggle {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 10;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    background: rgba(28, 26, 59, 0.45);
+    color: #fff;
+    backdrop-filter: blur(6px);
+    transition: background-color 150ms ease;
+  }
+  .video-toggle:hover {
+    background: rgba(28, 26, 59, 0.7);
+  }
+  .video-toggle[hidden] {
+    display: none;
+  }
+  .video-toggle[data-state='playing'] .icon-play,
+  .video-toggle[data-state='paused'] .icon-pause {
+    display: none;
+  }
+</style>

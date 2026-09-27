@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = 4321;
+// Not 4321, so a running `astro dev` (with its dev toolbar) is never mistaken for the build under test.
+const PORT = 4329;
 
 /** Runs against the production build (`npm run build` first) served by `astro preview`. */
 export default defineConfig({
@@ -18,7 +19,8 @@ export default defineConfig({
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
   ],
   webServer: {
-    command: `npx astro preview --port ${PORT}`,
+    // --ignore-lock: a preview already running elsewhere (another port or session) must not stop the tests.
+    command: `npx astro preview --port ${PORT} --ignore-lock`,
     port: PORT,
     reuseExistingServer: !process.env.CI,
   },

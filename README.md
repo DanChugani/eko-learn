@@ -21,7 +21,8 @@ Node 22.18 or newer (the unit tests run TypeScript directly with Node).
 |---|---|
 | Phone, email, Calendly URL, rates, prices, tutors, feature flags, canonical domain | `src/config/site.ts` |
 | Homepage copy (hero, comparison, steps, subjects, FAQ) | `src/content/home.ts` |
-| Sample gap-map data in the hero | `src/content/sample-report.ts` |
+| Sample gap-map and report-card data | `src/content/sample-report.ts` |
+| Hero film of the tree (generated with Higgsfield, Kling 3.0) and its still frames | `public/media/`, paths in `heroMedia` in `src/content/home.ts` |
 | Design tokens (colours, fonts, spacing helpers) | `src/styles/global.css` |
 | Page shell: meta tags, Open Graph, JSON-LD, fonts, favicons | `src/layouts/BaseLayout.astro` |
 | Homepage sections | `src/components/sections/` |

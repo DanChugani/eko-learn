@@ -29,6 +29,13 @@ export default defineConfig({
             style: 'normal',
             display: 'swap',
           },
+          {
+            // Hero margin notes only; not preloaded.
+            src: [`${fontsource('fraunces')}/fraunces-latin-wght-italic.woff2`],
+            weight: '100 900',
+            style: 'italic',
+            display: 'swap',
+          },
         ],
       },
     },

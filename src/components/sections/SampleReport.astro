@@ -1,0 +1,32 @@
+---
+import GapMapCard from './GapMapCard.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import { sampleSection } from '../../content/home.ts';
+---
+
+<section class="section" aria-labelledby="sample-title">
+  <div class="page grid items-start gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+    <div class="lg:sticky lg:top-28">
+      <SectionHeader
+        id="sample-title"
+        eyebrow={sampleSection.eyebrow}
+        title={sampleSection.title}
+        lede={sampleSection.lede}
+      />
+      <ul class="mt-8 space-y-3">
+        {
+          sampleSection.points.map((point) => (
+            <li class="flex gap-3">
+              <svg class="mt-1.5 shrink-0 text-accent" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path d="M2 7.5l3.2 3L12 3.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>{point}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <GapMapCard />
+  </div>
+</section>

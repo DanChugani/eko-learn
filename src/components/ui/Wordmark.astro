@@ -10,10 +10,10 @@ const { tone = 'dark' } = Astro.props;
 <a
   href="/"
   class:list={[
-    'inline-flex min-h-11 items-center gap-2.5 font-display text-2xl font-semibold tracking-tight no-underline',
-    tone === 'dark' ? 'text-green' : 'text-paper',
+    'inline-flex min-h-11 items-center gap-2.5 font-sans text-lg font-bold tracking-[0.16em] uppercase no-underline',
+    tone === 'dark' ? 'text-brand' : 'text-paper',
   ]}
 >
-  <Mark size={30} />
+  <Mark size={34} />
   <span>Ekolearn</span>
 </a>

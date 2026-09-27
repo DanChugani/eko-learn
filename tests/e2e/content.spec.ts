@@ -25,6 +25,16 @@ test.describe('content integrity', () => {
     await expect(card.getByText(/^(Secure|Developing|Gap)$/)).toHaveCount(5 + 3); // strands + legend
   });
 
+  test('gap story visual is labelled illustrative and describes the gap for screen readers', async ({ page }) => {
+    const visual = page.locator('.gap-story');
+    await expect(visual).toContainText('Illustrative sample, not a real student.');
+    await expect(page.getByRole('figure', { name: /Mathematics: B.*Spatial Sense is the gap to teach first/ })).toBeVisible();
+    // Once scrolled into view the sequence finishes with the gap row tagged.
+    await visual.scrollIntoViewIfNeeded();
+    await expect(visual.locator('.start-here')).toHaveText('Start here');
+    await expect(visual).toHaveClass(/is-playing/);
+  });
+
   test('pricing shows three tiers with the worksheets price from config', async ({ page }) => {
     const pricing = page.locator('#pricing');
     await expect(pricing.getByRole('heading', { level: 3 })).toHaveText([

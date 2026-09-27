@@ -59,3 +59,28 @@ test.describe('Calendly booking embed', () => {
     );
   });
 });
+
+test.describe('hero video', () => {
+  test('plays muted with a pause control, over a still frame', async ({ page }) => {
+    await page.goto('/');
+    const video = page.locator('[data-hero-video]');
+    await expect(page.locator('.hero-still')).toHaveJSProperty('complete', true);
+    await expect(video).toHaveJSProperty('muted', true);
+
+    const toggle = page.getByRole('button', { name: 'Pause background animation' });
+    await expect(toggle).toBeVisible();
+    await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(false);
+
+    await toggle.click();
+    await expect(page.getByRole('button', { name: 'Play background animation' })).toBeVisible();
+    await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+  });
+
+  test('stays still when the visitor prefers reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await expect(page.getByRole('button', { name: 'Play background animation' })).toBeVisible();
+    await page.waitForTimeout(500);
+    expect(await page.locator('[data-hero-video]').evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+  });
+});

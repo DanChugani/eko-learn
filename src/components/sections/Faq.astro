@@ -7,14 +7,14 @@ import { faqs } from '../../content/home.ts';
   <div class="page grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
     <SectionHeader id="faq-title" eyebrow="FAQ" title="Questions parents ask first." />
 
-    <div class="border-t-2 border-green">
+    <div class="border-t-2 border-brand">
       {
         faqs.map((faq) => (
           <details class="faq group border-b border-line">
             <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4">
               <h3 class="font-display text-xl font-semibold text-ink">{faq.question}</h3>
               <svg
-                class="shrink-0 text-green transition-transform group-open:rotate-45"
+                class="shrink-0 text-brand transition-transform group-open:rotate-45"
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"

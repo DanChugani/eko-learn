@@ -15,7 +15,7 @@ import { subjects } from '../../content/home.ts';
     {
       subjects.map((subject) => (
         <article id={subject.id} class="card p-6 sm:p-8" aria-labelledby={`${subject.id}-title`}>
-          <h3 id={`${subject.id}-title`} class="text-2xl text-green">
+          <h3 id={`${subject.id}-title`} class="text-2xl text-brand">
             {subject.name}
           </h3>
           <p class="mt-1 text-muted">{subject.summary}</p>
@@ -28,7 +28,7 @@ import { subjects } from '../../content/home.ts';
                 {group.items.map((item) => (
                   <li class="flex gap-3 border-b border-line/60 py-2 last:border-b-0">
                     {item.code ? (
-                      <span class="w-32 shrink-0 font-semibold text-green tabular-nums max-[400px]:w-24">
+                      <span class="w-32 shrink-0 font-semibold text-brand tabular-nums max-[400px]:w-24">
                         {item.code}
                       </span>
                     ) : (

@@ -32,6 +32,38 @@ export const hero = {
   secondaryCta: { label: 'See a sample report', href: '#sample-report' },
 };
 
+/** Hero film of the brand tree (generated with Higgsfield). The still is its first frame. */
+export const heroMedia = {
+  poster: '/media/hero-tree.jpg',
+  posterSmall: '/media/hero-tree-1280.jpg',
+  video: '/media/hero-tree.mp4',
+  videoSmall: '/media/hero-tree-720.mp4',
+  width: 1920,
+  height: 1080,
+};
+
+export const gapStory = {
+  eyebrow: 'Why start with a map',
+  title: 'A report card gives one mark. The map shows which part.',
+  lede: 'A B in math can hide a strand that is well below grade level. The diagnostic assessment checks each strand against the Ontario expectation for your child’s grade, so the gap is found before tutoring starts, not after the next test.',
+  reportCardTag: 'What the report card says',
+  gapMapTag: 'What the assessment shows',
+  question: 'But which part?',
+  startHere: 'Start here',
+};
+
+export const sampleSection = {
+  eyebrow: 'Sample report',
+  title: 'After the assessment, you get the whole map.',
+  lede: 'Every strand for your child’s grade, marked secure, developing or gap against the Ontario curriculum expectation. A tutor walks you through it on a review call, then builds the first four weeks around it.',
+  points: [
+    'Strand by strand, not one overall mark.',
+    'Measured against the expectation for their grade.',
+    'A tutor plan built from the gaps, in order.',
+    'Re-assessed against the same map, so you can see what moved.',
+  ],
+};
+
 export const facts = [
   'Grades 1 to 12',
   'Ontario curriculum',

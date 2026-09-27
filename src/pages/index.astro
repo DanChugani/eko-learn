@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/sections/Nav.astro';
 import Hero from '../components/sections/Hero.astro';
+import GapStory from '../components/sections/GapStory.astro';
+import SampleReport from '../components/sections/SampleReport.astro';
 import FactStrip from '../components/sections/FactStrip.astro';
 import Positioning from '../components/sections/Positioning.astro';
 import HowItWorks from '../components/sections/HowItWorks.astro';
@@ -24,6 +26,8 @@ const jsonLd = [organizationSchema(site, seo.description), faqSchema(faqs)];
   <main id="main" tabindex="-1">
     <Hero />
     <FactStrip />
+    <GapStory />
+    <SampleReport />
     <Positioning />
     <HowItWorks />
     <Subjects />

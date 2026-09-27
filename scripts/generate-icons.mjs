@@ -9,18 +9,11 @@ import { createServer } from 'node:http';
 import { readFile, writeFile } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
+import { markSvgDocument } from '../src/lib/mark.ts';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const DIST = join(ROOT, 'dist');
 const PUBLIC = join(ROOT, 'public');
-
-const markSvg = ({ rounded }) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" ${rounded ? 'rx="7"' : ''} fill="#1f4d3f"/>
-  <rect x="7" y="8" width="18" height="3.5" rx="1.75" fill="#f5f1e8"/>
-  <rect x="7" y="14.25" width="13" height="3.5" rx="1.75" fill="#f5f1e8"/>
-  <rect x="7" y="20.5" width="7" height="3.5" rx="1.75" fill="#f0a477"/>
-</svg>
-`;
 
 const TYPES = { '.html': 'text/html', '.woff2': 'font/woff2', '.css': 'text/css', '.js': 'text/javascript' };
 
@@ -72,14 +65,14 @@ async function renderOgImage(page, origin) {
     card.querySelector('figcaption')?.remove();
     card.style.cssText = 'width:540px;padding:24px 28px;transform:scale(0.84);transform-origin:top right;';
     document.body.innerHTML = `
-      <div style="box-sizing:border-box;width:1200px;height:630px;padding:64px 72px;display:flex;gap:40px;align-items:flex-start;background:#f5f1e8;overflow:hidden">
+      <div style="box-sizing:border-box;width:1200px;height:630px;padding:64px 72px;display:flex;gap:40px;align-items:flex-start;background:linear-gradient(115deg,#25309a 0%,#4a48c0 48%,#8e68d6 100%);overflow:hidden">
         <div style="flex:1;display:flex;flex-direction:column;height:100%">
-          <p class="font-display" style="font-size:34px;font-weight:600;color:#1f4d3f;display:flex;align-items:center;gap:14px">
-            ${document.querySelector('header a[href="/"] svg').outerHTML.replace('width="30" height="30"', 'width="44" height="44"')}
+          <p style="font-size:28px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:16px">
+            ${document.querySelector('header a[href="/"] svg').outerHTML.replace('width="34" height="34"', 'width="56" height="56"')}
             Ekolearn
           </p>
-          <h1 class="font-display" style="margin-top:56px;font-size:66px;line-height:1.05;color:#1f4d3f">Find the gaps.<br>Teach the gaps.</h1>
-          <p style="margin-top:auto;font-size:24px;color:#4a5550">1-on-1 online tutoring, Grades 1 to 12.<br>Ontario curriculum. Toronto.</p>
+          <h1 class="font-display" style="margin-top:52px;font-size:66px;line-height:1.05;color:#fff">Find the <span style="color:#f2ce6e">gaps</span>.<br>Teach the gaps.</h1>
+          <p style="margin-top:auto;font-size:24px;color:#e6e2fa">1-on-1 online tutoring, Grades 1 to 12.<br>Ontario curriculum. Toronto.</p>
         </div>
       </div>`;
     document.body.firstElementChild.append(card);
@@ -95,12 +88,13 @@ const browser = await chromium.launch();
 try {
   const page = await browser.newPage({ deviceScaleFactor: 1 });
 
-  await writeFile(join(PUBLIC, 'favicon.svg'), markSvg({ rounded: true }));
-  const ico = await renderSvg(page, markSvg({ rounded: true }), 32);
-  await writeFile(join(PUBLIC, 'favicon.ico'), pngToIco(ico, 32));
-  await writeFile(join(PUBLIC, 'apple-touch-icon.png'), await renderSvg(page, markSvg({ rounded: false }), 180));
-  await writeFile(join(PUBLIC, 'icon-192.png'), await renderSvg(page, markSvg({ rounded: true }), 192));
-  await writeFile(join(PUBLIC, 'icon-512.png'), await renderSvg(page, markSvg({ rounded: true }), 512));
+  const disc = markSvgDocument('disc');
+  await writeFile(join(PUBLIC, 'favicon.svg'), disc);
+  await writeFile(join(PUBLIC, 'favicon.ico'), pngToIco(await renderSvg(page, disc, 32), 32));
+  // iOS masks the touch icon itself, so it gets the full-bleed square.
+  await writeFile(join(PUBLIC, 'apple-touch-icon.png'), await renderSvg(page, markSvgDocument('square'), 180));
+  await writeFile(join(PUBLIC, 'icon-192.png'), await renderSvg(page, disc, 192));
+  await writeFile(join(PUBLIC, 'icon-512.png'), await renderSvg(page, disc, 512));
   await writeFile(join(PUBLIC, 'og-image.png'), await renderOgImage(page, origin));
 
   process.stdout.write('Wrote favicon.svg, favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png, og-image.png\n');

@@ -1,30 +1,37 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens. Contrast (WCAG 2.x) checked for every text pairing:
- *   ink on paper 13.8:1, muted on paper 6.9:1, green on paper 8.5:1,
- *   accent-ink on paper 5.2:1, paper on green 8.5:1, footer-muted on green 6.4:1.
- * accent (#D9622B) is for data marks and rules only; use accent-ink for text.
+ * Design tokens, taken from the logo: an indigo-to-violet field with a gold tree.
+ * Contrast (WCAG 2.x) checked for every text pairing:
+ *   ink on paper 15.4:1, muted on paper 7.4:1, brand on paper 8.1:1, accent-ink on paper 5.8:1,
+ *   paper on brand 8.1:1, footer-muted on brand-strong 7.6:1, accent-light on brand-strong 7.6:1,
+ *   white on hero-from 10.7:1, white on hero-mid 7.1:1, hero-soft on hero-mid 5.6:1, brand-strong on accent-light 7.6:1.
+ * accent (gold) is for data marks, rules and decoration only; use accent-ink for text on light
+ * backgrounds and accent-light on the dark hero and footer.
  */
 @theme {
-  --color-paper: #f5f1e8;
-  --color-paper-deep: #ece5d6;
-  --color-card: #fffdf8;
-  --color-line: #d8cfbc;
-  --color-track: #e9e2d3;
-  --color-ink: #1d2622;
-  --color-muted: #4a5550;
-  --color-green: #1f4d3f;
-  --color-green-strong: #163a2f;
-  --color-green-tint: #e4ece6;
-  --color-sage: #6e9483;
-  --color-sage-ink: #3f5e52;
-  --color-sage-tint: #e9efea;
-  --color-accent: #d9622b;
-  --color-accent-ink: #a8461a;
-  --color-accent-tint: #fbeadf;
-  --color-accent-light: #f0a477;
-  --color-footer-muted: #c9d6cf;
+  --color-paper: #f7f5fc;
+  --color-paper-deep: #eeeaf8;
+  --color-card: #ffffff;
+  --color-line: #dcd6ee;
+  --color-track: #e9e4f5;
+  --color-ink: #1c1a3b;
+  --color-muted: #504c70;
+  --color-brand: #3a3da8;
+  --color-brand-strong: #2b2d85;
+  --color-brand-tint: #e7e7f8;
+  --color-violet: #8c6ed8;
+  --color-violet-ink: #5b45a6;
+  --color-violet-tint: #f0eafb;
+  --color-accent: #d9a62e;
+  --color-accent-ink: #7e5a0c;
+  --color-accent-tint: #fbf0d4;
+  --color-accent-light: #f2ce6e;
+  --color-footer-muted: #d0cff0;
+  --color-hero-from: #25309a;
+  --color-hero-mid: #4a48c0;
+  --color-hero-to: #8e68d6;
+  --color-hero-soft: #e6e2fa;
 
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-figtree);
@@ -48,6 +55,7 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
@@ -78,7 +86,7 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-accent);
+    outline: 3px solid var(--color-violet-ink);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -123,7 +131,7 @@
 
   .section-title {
     font-size: clamp(1.875rem, 1.3rem + 2.4vw, 2.875rem);
-    color: var(--color-green);
+    color: var(--color-brand);
   }
 
   .lede {
@@ -151,23 +159,40 @@
       color 150ms ease;
   }
   .btn-primary {
-    background: var(--color-green);
+    background: var(--color-brand);
     color: var(--color-paper);
   }
   .btn-primary:hover {
-    background: var(--color-green-strong);
+    background: var(--color-brand-strong);
   }
   .btn-secondary {
     background: transparent;
-    border-color: var(--color-green);
-    color: var(--color-green);
+    border-color: var(--color-brand);
+    color: var(--color-brand);
   }
   .btn-secondary:hover {
-    background: var(--color-green-tint);
+    background: var(--color-brand-tint);
+  }
+  /* For the dark gradient hero, echoing the gold tree on the logo. */
+  .btn-gold {
+    background: var(--color-accent-light);
+    color: var(--color-brand-strong);
+  }
+  .btn-gold:hover {
+    background: #f7dc93;
+  }
+  .btn-ghost-light {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #fff;
+  }
+  .btn-ghost-light:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff;
   }
 
   .link {
-    color: var(--color-green);
+    color: var(--color-brand);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-thickness: 1px;
