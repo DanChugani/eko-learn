@@ -1,4 +1,4 @@
-import type { Site } from '../config/site.ts';
+import type { SiteConfig } from '../config/site.ts';
 import { realOrUndefined } from './placeholders.ts';
 
 type JsonLd = Record<string, unknown>;
@@ -8,7 +8,7 @@ function compact<T extends JsonLd>(obj: T): T {
   return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as T;
 }
 
-export function organizationSchema(site: Site, description: string): JsonLd {
+export function organizationSchema(site: SiteConfig, description: string): JsonLd {
   const origin = site.url.replace(/\/$/, '');
   return compact({
     '@context': 'https://schema.org',

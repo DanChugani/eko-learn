@@ -15,7 +15,29 @@ export interface Tutor {
   photo: string | null;
 }
 
-export const site = {
+export interface SiteConfig {
+  name: string;
+  url: string;
+  locale: string;
+  lang: string;
+  email: string;
+  phone: { display: string; e164: string };
+  location: { city: string; region: string; regionCode: string; country: string };
+  calendlyUrl: string;
+  worksheetsEarlyAccessUrl: string;
+  ogImage: string;
+  pricing: {
+    currency: string;
+    sessionRate: string;
+    sessionLength: string;
+    bundleSummary: string;
+    worksheetsMonthly: number;
+  };
+  tutors: readonly Tutor[];
+  features: { tutors: boolean; adultEducation: boolean };
+}
+
+export const site: SiteConfig = {
   name: 'Ekolearn',
   /** Canonical origin. The live domain redirects ekolearn.com to www, so www is canonical. */
   url: 'https://www.ekolearn.com',
@@ -60,7 +82,7 @@ export const site = {
     { name: '[TUTOR 1 NAME]', subjects: '[SUBJECTS]', credential: '[CREDENTIAL]', photo: null },
     { name: '[TUTOR 2 NAME]', subjects: '[SUBJECTS]', credential: '[CREDENTIAL]', photo: null },
     { name: '[TUTOR 3 NAME]', subjects: '[SUBJECTS]', credential: '[CREDENTIAL]', photo: null },
-  ] satisfies Tutor[],
+  ],
 
   features: {
     /** Tutors section and its nav link. Turn off if profiles are not ready at launch. */
@@ -68,6 +90,4 @@ export const site = {
     /** Adult education / IELTS section. Kept in the codebase, hidden from the K-12 homepage. */
     adultEducation: false,
   },
-} as const;
-
-export type Site = typeof site;
+};
