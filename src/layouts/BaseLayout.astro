@@ -1,0 +1,81 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { site } from '../config/site.ts';
+import { serializeJsonLd } from '../lib/schema.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Page path, e.g. '/' or '/grade-9-math/'. Used for the canonical URL. */
+  path?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, path = Astro.url.pathname, noindex = false, jsonLd = [] } = Astro.props;
+const canonical = new URL(path, site.url).toString();
+const ogImage = new URL(site.ogImage, site.url).toString();
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <Font cssVariable="--font-figtree" preload />
+    <Font cssVariable="--font-fraunces" preload={[{ style: 'normal' }]} />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#25309a" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ekolearn sample gap map report for Grade 6 Math" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <noscript>
+      <style>
+        /*
+         * Without JavaScript the menu toggle cannot work, so show the mobile links statically instead.
+         * Declared in Tailwind's base layer: preflight's layered [hidden] !important would beat an unlayered rule.
+         */
+        @layer base {
+          @media (max-width: 63.99rem) {
+            header.sticky { position: static; }
+            [data-menu-button] { display: none !important; }
+            #mobile-menu[hidden] { display: block !important; }
+          }
+        }
+      </style>
+    </noscript>
+
+    {jsonLd.map((data) => <script type="application/ld+json" set:html={serializeJsonLd(data)} />)}
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only z-100 rounded bg-brand px-4 py-3 font-semibold text-paper focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >Skip to content</a
+    >
+    <slot />
+  </body>
+</html>

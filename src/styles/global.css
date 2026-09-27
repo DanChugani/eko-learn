@@ -1,0 +1,210 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens, taken from the logo: an indigo-to-violet field with a gold tree.
+ * Contrast (WCAG 2.x) checked for every text pairing:
+ *   ink on paper 15.4:1, muted on paper 7.4:1, brand on paper 8.1:1, accent-ink on paper 5.8:1,
+ *   paper on brand 8.1:1, footer-muted on brand-strong 7.6:1, accent-light on brand-strong 7.6:1,
+ *   white on hero-from 10.7:1, white on hero-mid 7.1:1, hero-soft on hero-mid 5.6:1, brand-strong on accent-light 7.6:1.
+ * accent (gold) is for data marks, rules and decoration only; use accent-ink for text on light
+ * backgrounds and accent-light on the dark hero and footer.
+ */
+@theme {
+  --color-paper: #f7f5fc;
+  --color-paper-deep: #eeeaf8;
+  --color-card: #ffffff;
+  --color-line: #dcd6ee;
+  --color-track: #e9e4f5;
+  --color-ink: #1c1a3b;
+  --color-muted: #504c70;
+  --color-brand: #3a3da8;
+  --color-brand-strong: #2b2d85;
+  --color-brand-tint: #e7e7f8;
+  --color-violet: #8c6ed8;
+  --color-violet-ink: #5b45a6;
+  --color-violet-tint: #f0eafb;
+  --color-accent: #d9a62e;
+  --color-accent-ink: #7e5a0c;
+  --color-accent-tint: #fbf0d4;
+  --color-accent-light: #f2ce6e;
+  --color-footer-muted: #d0cff0;
+  --color-hero-from: #25309a;
+  --color-hero-mid: #4a48c0;
+  --color-hero-to: #8e68d6;
+  --color-hero-soft: #e6e2fa;
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-figtree);
+
+  --container-page: 72rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* Keeps anchor targets clear of the sticky header. */
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 560;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-violet-ink);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-accent-tint);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  .page {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 40rem) {
+    .page {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  .section {
+    padding-block: 4.5rem;
+  }
+  @media (min-width: 64rem) {
+    .section {
+      padding-block: 6.5rem;
+    }
+  }
+
+  /* Small letterspaced label above headings, like a report card field name. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-ink);
+  }
+
+  .section-title {
+    font-size: clamp(1.875rem, 1.3rem + 2.4vw, 2.875rem);
+    color: var(--color-brand);
+  }
+
+  .lede {
+    font-size: 1.125rem;
+    color: var(--color-muted);
+    max-width: 40rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.375rem;
+    border-radius: 0.375rem;
+    border: 2px solid transparent;
+    font-weight: 650;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+  .btn-primary {
+    background: var(--color-brand);
+    color: var(--color-paper);
+  }
+  .btn-primary:hover {
+    background: var(--color-brand-strong);
+  }
+  .btn-secondary {
+    background: transparent;
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+  }
+  .btn-secondary:hover {
+    background: var(--color-brand-tint);
+  }
+  /* For the dark gradient hero, echoing the gold tree on the logo. */
+  .btn-gold {
+    background: var(--color-accent-light);
+    color: var(--color-brand-strong);
+  }
+  .btn-gold:hover {
+    background: #f7dc93;
+  }
+  .btn-ghost-light {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #fff;
+  }
+  .btn-ghost-light:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff;
+  }
+
+  .link {
+    color: var(--color-brand);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .link:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: 0.5rem;
+  }
+}

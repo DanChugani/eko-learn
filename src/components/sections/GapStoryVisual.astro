@@ -1,0 +1,317 @@
+---
+/**
+ * Gap story visual: the same illustrative student seen two ways. A report card gives one
+ * respectable mark; the assessment scans each strand and circles the gap it was hiding.
+ * Decorative layers are aria-hidden; the figcaption carries the meaning for screen readers.
+ */
+import StatusIcon from '../ui/StatusIcon.astro';
+import HandCircle from '../ui/HandCircle.astro';
+import { gapStory } from '../../content/home.ts';
+import { sampleReport, sampleReportCard, statusLabels } from '../../content/sample-report.ts';
+
+const { grade, subject, expectation, strands } = sampleReport;
+const gap = strands.find((s) => s.status === 'gap');
+
+const fill = { secure: 'bg-brand', developing: 'bg-violet', gap: 'bg-accent' } as const;
+const tone = { secure: 'text-brand', developing: 'text-violet-ink', gap: 'text-accent-ink' } as const;
+
+/** Timeline, in ms. The scan passes each row as its bar grows. */
+const SCAN_START = 1000;
+const ROW_STEP = 240;
+const circleAt = SCAN_START + strands.length * ROW_STEP + 250;
+
+const summary =
+  `Illustrative sample. A Grade ${grade} report card shows ${sampleReportCard.subject}: ${sampleReportCard.mark}. ` +
+  `The diagnostic assessment breaks that into strands: ` +
+  strands.map((s) => `${s.name} ${statusLabels[s.status].toLowerCase()}`).join(', ') +
+  (gap ? `. ${gap.name} is the gap to teach first.` : '.');
+---
+
+<figure class="gap-story relative mx-auto w-full max-w-[34rem]" aria-labelledby="gap-story-caption">
+  <div class="stage" aria-hidden="true">
+    <!-- What the report card says -->
+    <div class="report slip card relative p-5 shadow-[0_20px_40px_-24px_rgba(20,18,70,0.55)] sm:p-6">
+      <p class="tag bg-paper-deep text-muted">{gapStory.reportCardTag}</p>
+      <div class="flex items-center justify-between gap-4 border-b border-line pb-3">
+        <p class="text-xs font-bold tracking-[0.14em] text-muted uppercase">
+          {sampleReportCard.label} · Grade {grade}
+        </p>
+        <span class="flex gap-1">
+          <span class="h-1.5 w-6 rounded-full bg-line"></span>
+          <span class="h-1.5 w-3 rounded-full bg-line"></span>
+        </span>
+      </div>
+      <div class="mt-4 flex items-center justify-between gap-4">
+        <div class="min-w-0">
+          <p class="font-display text-xl text-ink">{sampleReportCard.subject}</p>
+          <p class="mt-1 text-sm leading-snug text-muted">{sampleReportCard.comment}</p>
+        </div>
+        <p class="mark grid size-16 shrink-0 place-items-center rounded-md border-2 border-ink/80 font-display text-4xl text-ink">
+          {sampleReportCard.mark}
+        </p>
+      </div>
+      <div class="mt-4 space-y-2">
+        <span class="block h-1.5 w-full rounded-full bg-track"></span>
+        <span class="block h-1.5 w-4/5 rounded-full bg-track"></span>
+      </div>
+    </div>
+
+    <!-- Margin note linking the two -->
+    <div class="note">
+      <p class="font-display text-lg leading-tight text-accent-ink italic sm:text-xl">{gapStory.question}</p>
+      <svg class="note-arrow" viewBox="0 0 60 70" fill="none">
+        <path pathLength="1" d="M40 4c14 18 12 40-10 56" />
+        <path pathLength="1" d="M22 52l8 9 9-5" />
+      </svg>
+    </div>
+
+    <!-- What the assessment shows -->
+    <div class="map slip card relative p-5 shadow-[0_28px_60px_-24px_rgba(20,18,70,0.6)] sm:p-6">
+      <p class="tag bg-brand text-white">{gapStory.gapMapTag}</p>
+      <div class="flex items-baseline justify-between gap-3 border-b border-line pb-3">
+        <p class="font-display text-xl text-brand">Grade {grade} {subject}</p>
+        <p class="text-xs font-semibold whitespace-nowrap text-muted">
+          <span class="mr-1 inline-block h-3 w-0.5 translate-y-0.5 bg-ink"></span>Grade {grade} expectation
+        </p>
+      </div>
+
+      <ul class="rows relative mt-4 space-y-3.5">
+        <li class="scan"></li>
+        {
+          strands.map((strand, i) => (
+            <li class="row relative" style={`--row:${SCAN_START + i * ROW_STEP}ms`}>
+              {strand.status === 'gap' && <HandCircle class="-inset-x-4 -top-2.5 -bottom-3" delay={`${circleAt}ms`} />}
+              <div class="flex items-center justify-between gap-3 text-sm">
+                <p class="flex items-center font-semibold">
+                  <span class="mr-1 inline-block w-4 font-display text-brand">{strand.code}</span>
+                  {strand.name}
+                  {strand.status === 'gap' && (
+                    <span class="start-here" style={`--pop:${circleAt + 400}ms`}>
+                      {gapStory.startHere}
+                    </span>
+                  )}
+                </p>
+                <p class:list={[tone[strand.status], 'status inline-flex items-center gap-1.5 font-semibold']}>
+                  <StatusIcon status={strand.status} />
+                  {statusLabels[strand.status]}
+                </p>
+              </div>
+              <div class="relative mt-1.5 h-2 rounded-full bg-track">
+                <div class:list={[fill[strand.status], 'bar h-full rounded-full']} style={`width:${strand.level}%`} />
+                <div class="absolute -top-1 -bottom-1 w-0.5 bg-ink" style={`left:${expectation}%`} />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <figcaption id="gap-story-caption">
+    <span class="sr-only">{summary}</span>
+    <span aria-hidden="true" class="mt-4 block text-center text-xs text-muted lg:text-right">
+      Illustrative sample, not a real student.
+    </span>
+  </figcaption>
+</figure>
+
+<script>
+  // Hold the sequence until the visual is on screen; on phones it sits below the fold.
+  // Without JS (or IntersectionObserver) it simply plays on load.
+  const visual = document.querySelector<HTMLElement>('.gap-story');
+  if (visual && 'IntersectionObserver' in window) {
+    visual.dataset.armed = '';
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        visual.classList.add('is-playing');
+        observer.disconnect();
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(visual);
+  }
+</script>
+
+<style>
+  .gap-story[data-armed]:not(.is-playing) :global(*) {
+    animation-play-state: paused;
+  }
+
+  /* Two cards share a 12-column grid and overlap by the middle row. */
+  .stage {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto 2.75rem auto;
+  }
+  .report {
+    grid-column: 1 / 11;
+    grid-row: 1 / 3;
+    align-self: start;
+    background: var(--color-card);
+    rotate: -3deg;
+    animation: slip-in 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .map {
+    grid-column: 2 / 13;
+    grid-row: 2 / 4;
+    z-index: 1;
+    rotate: 1deg;
+    animation: slip-in 650ms cubic-bezier(0.2, 0.7, 0.2, 1) 550ms both;
+  }
+  @media (min-width: 64rem) {
+    .report {
+      grid-column: 1 / 10;
+    }
+    .map {
+      grid-column: 3 / 13;
+    }
+  }
+
+  .tag {
+    position: absolute;
+    top: 0;
+    left: 1.25rem;
+    translate: 0 -55%;
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .mark {
+    rotate: -6deg;
+    animation: stamp 420ms cubic-bezier(0.3, 1.4, 0.5, 1) 300ms both;
+  }
+
+  /* Sits in the empty corner right of the report card, pointing down at the map. */
+  .note {
+    grid-column: 10 / 13;
+    grid-row: 1 / 2;
+    align-self: end;
+    justify-self: end;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 7.5rem;
+    padding-bottom: 0.25rem;
+    text-align: right;
+    animation: fade-in 400ms ease 750ms both;
+  }
+  @media (min-width: 64rem) {
+    .note {
+      grid-column: 10 / 13;
+    }
+  }
+  .note-arrow {
+    width: 2.5rem;
+    height: 3rem;
+    margin-right: 1rem;
+  }
+  .note-arrow path {
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 500ms ease-out 950ms forwards;
+  }
+  .note-arrow path + path {
+    animation-delay: 1350ms;
+    animation-duration: 200ms;
+  }
+  /* On narrow screens the corner is too small for the note; drop it. */
+  @media (max-width: 26rem) {
+    .note {
+      display: none;
+    }
+  }
+
+  /* Scan line sweeps the strand rows once, as if the assessment is reading them. */
+  .scan {
+    position: absolute;
+    inset-inline: -0.75rem;
+    top: 0;
+    height: 2px;
+    z-index: 2;
+    background: var(--color-brand);
+    box-shadow:
+      0 0 0 1px rgba(58, 61, 168, 0.08),
+      0 -22px 26px -8px rgba(140, 110, 216, 0.35);
+    opacity: 0;
+    list-style: none;
+    animation: scan 1500ms cubic-bezier(0.45, 0, 0.55, 1) 900ms both;
+  }
+
+  .row .bar {
+    transform-origin: left center;
+    animation: grow 650ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--row) both;
+  }
+  .row .status {
+    animation: fade-in 300ms ease calc(var(--row) + 200ms) both;
+  }
+
+  .start-here {
+    margin-left: 0.6rem;
+    rotate: -3deg;
+    border-radius: 0.3rem;
+    background: var(--color-accent-light);
+    color: var(--color-brand-strong);
+    padding: 0.1rem 0.45rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 6px 14px -6px rgba(126, 90, 12, 0.55);
+    animation: stamp 380ms cubic-bezier(0.3, 1.4, 0.5, 1) var(--pop) both;
+  }
+
+  @keyframes slip-in {
+    from {
+      opacity: 0;
+      translate: 0 18px;
+    }
+  }
+  @keyframes stamp {
+    from {
+      opacity: 0;
+      scale: 1.5;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes scan {
+    0% {
+      top: -0.5rem;
+      opacity: 0;
+    }
+    10%,
+    85% {
+      opacity: 1;
+    }
+    100% {
+      top: calc(100% + 0.5rem);
+      opacity: 0;
+    }
+  }
+</style>

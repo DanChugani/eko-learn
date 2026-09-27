@@ -1,0 +1,15 @@
+---
+import CalendlyEmbed from './CalendlyEmbed.astro';
+import { finalCta } from '../../content/home.ts';
+---
+
+<section id="book" class="section page" aria-labelledby="book-title">
+  <div class="mx-auto max-w-2xl text-center">
+    <p class="eyebrow">Free diagnostic assessment</p>
+    <h2 id="book-title" class="mt-3 text-[clamp(2.25rem,1.5rem+3.4vw,3.75rem)] text-brand">{finalCta.title}</h2>
+    <p class="lede mx-auto mt-4">{finalCta.body}</p>
+  </div>
+  <div class="mx-auto mt-10 max-w-4xl">
+    <CalendlyEmbed />
+  </div>
+</section>

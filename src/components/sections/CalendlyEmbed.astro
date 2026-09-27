@@ -1,0 +1,56 @@
+---
+import { site } from '../../config/site.ts';
+import { calendlyEmbedUrl } from '../../lib/calendly.ts';
+
+const embedUrl = calendlyEmbedUrl(site.calendlyUrl);
+---
+
+<!--
+  Calendly's script, iframe and cookies load only when the booking area nears the viewport.
+  The height is reserved up front so nothing shifts when it arrives.
+-->
+<div class="card relative h-[720px] w-full overflow-hidden">
+  <p class="absolute inset-0 flex items-center justify-center p-6 text-center text-muted">
+    Loading the booking calendar.
+  </p>
+  <div
+    class="calendly-inline-widget relative h-full w-full"
+    data-url={embedUrl}
+    data-calendly-lazy
+    style="min-width:300px"
+  >
+  </div>
+</div>
+<p class="mt-4 text-center text-muted">
+  Calendar not loading? <a class="link" href={site.calendlyUrl} target="_blank" rel="noopener"
+    >Open the booking page in a new tab</a
+  >.
+</p>
+
+<script>
+  const SCRIPT_SRC = 'https://assets.calendly.com/assets/external/widget.js';
+  const target = document.querySelector('[data-calendly-lazy]');
+
+  const loadCalendly = () => {
+    if (document.querySelector(`script[src="${SCRIPT_SRC}"]`)) return;
+    const script = document.createElement('script');
+    script.src = SCRIPT_SRC;
+    script.async = true;
+    document.head.append(script);
+  };
+
+  if (target && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          loadCalendly();
+        }
+      },
+      { rootMargin: '600px 0px' },
+    );
+    observer.observe(target);
+  } else if (target) {
+    loadCalendly();
+  }
+</script>

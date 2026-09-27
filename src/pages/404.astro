@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/sections/Nav.astro';
+import Footer from '../components/sections/Footer.astro';
+import { primaryCta } from '../content/home.ts';
+---
+
+<BaseLayout
+  title="Page not found | Ekolearn"
+  description="This page does not exist. Head back to Ekolearn for Ontario curriculum tutoring, Grades 1 to 12."
+  path="/404/"
+  noindex
+>
+  <Nav />
+  <main id="main" tabindex="-1" class="section page">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="section-title mt-3">This page is not on the map.</h1>
+    <p class="lede mt-4">The link may be old, or the address may have a typo.</p>
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href="/" class="btn btn-primary">Go to the homepage</a>
+      <a href={`/${primaryCta.href}`} class="btn btn-secondary">{primaryCta.label}</a>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

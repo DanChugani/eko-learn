@@ -1,0 +1,50 @@
+---
+/**
+ * A marker-pen loop drawn around its positioned parent, like a tutor circling
+ * something on a page. Decorative only. Draws itself in after `delay`.
+ * The span takes the insets: an absolutely positioned SVG keeps its intrinsic size.
+ */
+interface Props {
+  delay?: string;
+  class?: string;
+}
+const { delay = '0ms', class: className } = Astro.props;
+---
+
+<span class:list={['hand-circle', className]} aria-hidden="true" style={`--draw-delay:${delay}`}>
+  <svg viewBox="0 0 200 60" preserveAspectRatio="none" focusable="false">
+    <path
+      pathLength="1"
+      d="M22 14C58 3 150 2 186 16c14 7 12 26-6 33-36 12-124 12-160 0C2 43 1 27 14 19 34 8 86 5 124 7"
+    />
+  </svg>
+</span>
+
+<style>
+  .hand-circle {
+    position: absolute;
+    pointer-events: none;
+  }
+  .hand-circle svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .hand-circle path {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: hand-draw 650ms cubic-bezier(0.55, 0, 0.3, 1) var(--draw-delay) forwards;
+  }
+  @keyframes hand-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

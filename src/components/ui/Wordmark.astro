@@ -1,0 +1,19 @@
+---
+import Mark from './Mark.astro';
+
+interface Props {
+  tone?: 'dark' | 'light';
+}
+const { tone = 'dark' } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={[
+    'inline-flex min-h-11 items-center gap-2.5 font-sans text-lg font-bold tracking-[0.16em] uppercase no-underline',
+    tone === 'dark' ? 'text-brand' : 'text-paper',
+  ]}
+>
+  <Mark size={34} />
+  <span>Ekolearn</span>
+</a>

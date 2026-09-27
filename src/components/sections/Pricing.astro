@@ -1,0 +1,139 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import { site } from '../../config/site.ts';
+import { pricingNote, primaryCta } from '../../content/home.ts';
+
+const { pricing } = site;
+
+interface Tier {
+  id: string;
+  name: string;
+  price: string;
+  unit?: string;
+  tag?: string;
+  featured?: boolean;
+  summary: string;
+  includes: string[];
+  cta: { label: string; href: string };
+}
+
+const tiers: Tier[] = [
+  {
+    id: 'tier-assessment',
+    name: 'Diagnostic Assessment',
+    price: 'Free',
+    summary: 'The starting point for every student.',
+    includes: [
+      'Assessment against the Ontario expectations for your child’s grade',
+      'Gap map of every strand: secure, developing or gap',
+      'Review call to walk through the results',
+    ],
+    cta: primaryCta,
+  },
+  {
+    id: 'tier-tutoring',
+    name: '1-on-1 Tutoring',
+    price: pricing.sessionRate,
+    unit: 'per session',
+    tag: 'Core service',
+    featured: true,
+    summary: `Live, ${pricing.sessionLength} sessions online, planned from the gap map.`,
+    includes: [
+      'Pay per class, or save with bundles',
+      pricing.bundleSummary,
+      'Re-assessed against the same map to show progress',
+    ],
+    cta: primaryCta,
+  },
+  {
+    id: 'tier-worksheets',
+    name: 'Practice Worksheets',
+    price: `$${pricing.worksheetsMonthly}`,
+    unit: 'per month',
+    tag: 'Early access',
+    summary: 'Generated from your child’s gap map.',
+    includes: [
+      'Practice aimed at strands marked developing or gap',
+      'Works with tutoring or on its own',
+      'Starts from your free gap map',
+    ],
+    cta: { label: 'Join early access', href: site.worksheetsEarlyAccessUrl },
+  },
+];
+---
+
+<section id="pricing" class="section border-t border-line bg-paper-deep" aria-labelledby="pricing-title">
+  <div class="page">
+    <SectionHeader
+      id="pricing-title"
+      eyebrow="Pricing"
+      title="Start free. Pay for teaching, not guesswork."
+      lede="Every family starts with the free assessment. After that, choose tutoring, worksheets or both."
+    />
+
+    <ul class="mt-12 grid items-stretch gap-6 lg:grid-cols-3">
+      {
+        tiers.map((tier) => (
+          <li
+            class:list={[
+              'card relative flex flex-col p-6 sm:p-8',
+              tier.featured && 'border-2 border-brand lg:-my-3 lg:py-11',
+            ]}
+          >
+            {tier.tag && (
+              <p
+                class:list={[
+                  'absolute -top-3 left-6 rounded-sm px-2 py-0.5 text-xs font-bold tracking-[0.12em] uppercase',
+                  tier.featured ? 'bg-brand text-paper' : 'bg-accent-tint text-accent-ink',
+                ]}
+              >
+                {tier.tag}
+              </p>
+            )}
+            <h3 id={`${tier.id}-title`} class="text-2xl text-brand">
+              {tier.name}
+            </h3>
+            <p class="mt-4 flex flex-wrap items-baseline gap-x-2">
+              <span class="font-display text-4xl font-semibold text-ink">{tier.price}</span>
+              {tier.unit && <span class="text-muted">{tier.unit}</span>}
+            </p>
+            <p class="mt-2 text-muted">{tier.summary}</p>
+            <ul class="mt-6 mb-8 space-y-3 border-t border-line pt-6">
+              {tier.includes.map((item) => (
+                <li class="flex gap-3">
+                  <svg
+                    class="mt-1 shrink-0 text-brand"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M3 8.5l3 3 7-7"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <a
+              href={tier.cta.href}
+              class:list={['btn mt-auto w-full', tier.featured ? 'btn-primary' : 'btn-secondary']}
+            >
+              {tier.cta.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-10 text-center font-display text-xl text-brand">{pricingNote}</p>
+    <p class="mt-2 text-center text-sm text-muted">Prices in Canadian dollars.</p>
+  </div>
+</section>

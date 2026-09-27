@@ -1,0 +1,112 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import { positioning } from '../../content/home.ts';
+
+const { columns, rows } = positioning;
+---
+
+<section class="section page" aria-labelledby="positioning-title">
+  <SectionHeader
+    id="positioning-title"
+    eyebrow={positioning.eyebrow}
+    title={positioning.title}
+    lede={positioning.lede}
+  />
+
+  <!--
+    Explicit ARIA roles keep table semantics when rows are restyled as stacked blocks on small screens.
+  -->
+  <table class="compare mt-10 w-full border-collapse text-left" role="table">
+    <caption class="sr-only">Typical tutoring compared with Ekolearn</caption>
+    <thead role="rowgroup">
+      <tr role="row">
+        <td role="presentation"></td>
+        <th scope="col" role="columnheader" class="text-muted">{columns.typical}</th>
+        <th scope="col" role="columnheader" class="text-brand">{columns.ekolearn}</th>
+      </tr>
+    </thead>
+    <tbody role="rowgroup">
+      {
+        rows.map((row) => (
+          <tr role="row">
+            <th scope="row" role="rowheader" class="font-display text-lg font-semibold text-ink">
+              {row.label}
+            </th>
+            <td role="cell" data-label={columns.typical} class="text-muted">
+              {row.typical}
+            </td>
+            <td role="cell" data-label={columns.ekolearn} class="ekolearn">
+              {row.ekolearn}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</section>
+
+<style>
+  .compare th,
+  .compare td {
+    padding: 1.125rem 1rem;
+    vertical-align: top;
+  }
+  .compare thead th {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-brand);
+  }
+  .compare tbody tr {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .compare tbody th {
+    width: 22%;
+  }
+  .compare td.ekolearn {
+    background: var(--color-card);
+    border-left: 3px solid var(--color-accent);
+    font-weight: 500;
+  }
+
+  @media (max-width: 47.99rem) {
+    .compare thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    .compare tbody,
+    .compare tr,
+    .compare th,
+    .compare td {
+      display: block;
+      width: 100%;
+    }
+    .compare tbody tr {
+      padding-block: 1.25rem;
+    }
+    .compare tbody th {
+      width: 100%;
+      padding: 0 0 0.75rem;
+    }
+    .compare td {
+      padding: 0.75rem 1rem;
+    }
+    .compare td::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+    .compare td.ekolearn::before {
+      color: var(--color-brand);
+    }
+  }
+</style>
